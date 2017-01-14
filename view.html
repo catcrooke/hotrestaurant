@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Hot Restaurant</title>
+    <!-- Latest compiled and minified CSS & JS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="text-center"><span class="glyphicon glyphicon-fire"></span> Hot Restaurant</h1>
+            <hr>
+            <h2 class="text-center">View Your Reservations</h2>
+            <br>
+            <div class="text-center">
+                <a href="/reserve">
+                    <button type="button" class="btn btn-lg btn-primary"><span class="glyphicon glyphicon-list-alt"></span> Make Your Reservation</button>
+                </a>
+                <a href="/">
+                    <button type="button" class="btn btn-lg btn-default"><span class="glyphicon glyphicon-home"></span></button>
+                </a>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Current Reservations</div>
+            <div class="panel-body">
+            </div>
+            <!-- Table -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Table Name</th>
+                        <th>Name</th>
+                        <th>Unique ID</th>
+                    </tr>
+                </thead>
+                <tbody id="tables">
+                </tbody>
+            </table>
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">Wait List</div>
+            <div class="panel-body">
+            </div>
+            <!-- Table -->
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Table Name</th>
+                        <th>Name</th>
+                        <th>Unique ID</th>
+                    </tr>
+                </thead>
+                <tbody id="waitlist">
+                </tbody>
+            </table>
+        </div>
+        <footer class="footer">
+            <div class="container">
+                <p><a href="#" id="clear">Clear Table</a> | <a href="/api/tables">API Table Link</a> | <a href="/api/waitlist">API Wait List</a></p>
+            </div>
+        </footer>
+    </div>
+</body>
+<script>
+$(document).ready(function() {
+    $.get("/api/tables", function(data) {
+        for (var i = 0; i < data.length; i++) {
+            $("#tables").append("<tr> <td>" + (i + 1) + "</td> <td>" + data[i].name + "</td> <td>" + data[i].uniq_id + "</td> </tr>");
+        }
+
+    });
+});
+
+$(document).ready(function() {
+    $.get("/api/waitlist", function(data) {
+        for (var i = 0; i < data.length; i++) {
+            $("#waitlist").append("<tr> <td>" + (i + 1) + "</td> <td>" + data[i].name + "</td> <td>" + data[i].uniq_id + "</td> </tr>");
+        }
+
+    });
+});
+
+$("#clear").on("click", function() {
+    $.get("/clear", function(data) {
+        alert("clearing");
+
+    });
+    location.reload();
+});
+</script>
+
+</html>
